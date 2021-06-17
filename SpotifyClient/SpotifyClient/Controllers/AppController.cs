@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SpotifyClient.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,17 @@ namespace SpotifyClient.Controllers
 
         public IActionResult Login()
         {
-            return View();
+            Login login = new Login();
+            
+            return Redirect($"https://accounts.spotify.com/authorize?client_id={login.ClientID}&response_type=code&redirect_uri={login.RedirectURI}");
         }
+
+        public IActionResult Authorise(string code){
+
+            return Content(code);
+        }
+
+
+        
     }
 }
