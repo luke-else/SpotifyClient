@@ -9,6 +9,10 @@ namespace SpotifyClient.Models
         public string ClientSecret { get; }= "8b0843a3e91d4eacb090f3f131e2db02";
 
         public string RedirectURI { get; }= "https://spotify.luke-else.com/App/authorise";
-        
+
+        public string State { get; } = "SpotifyAuthorisation";
+
+        public string Scopes { get; } = "user-library-read user-read-playback-state user-modify-playback-state user-read-currently-playing app-remote-control streaming";
+
     }
 }
