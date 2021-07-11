@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using SpotifyClient.Models;
 using SpotifyClient.Models.JSONModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace SpotifyClient.Controllers
@@ -12,7 +12,12 @@ namespace SpotifyClient.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            if (HttpContext.Session.GetString("AccessToken") != null)
+            {
+                ViewBag.ID = HttpContext.Session.GetString("AccessToken");
+                return View();
+            }
+            return RedirectToAction("Login");
         }
 
         public IActionResult Login()
@@ -44,9 +49,24 @@ namespace SpotifyClient.Controllers
             var result = APIClient.Post("https://accounts.spotify.com/api/token", Headers, Body);
             var resultString = await result;
 
-            Token user = (Token)JSONHandler.DeSerialise(resultString);
+            Token user = JsonConvert.DeserializeObject<Token>(resultString);
 
-            return Content($"{user.AccessToken}");
+            if (user.Error == null)
+            {
+                //Create a user Cookie with the data collected from the API.
+
+                HttpContext.Session.SetString("AccessToken", user.AccessToken);
+                HttpContext.Session.SetString("TokenType", user.RefreshToken);
+                HttpContext.Session.SetInt32("Expiry", user.TokenExpiery);
+                HttpContext.Session.SetString("RefreshToken", user.RefreshToken);
+
+                return RedirectToAction("Index");
+
+            }
+            else
+            {
+                return Content(user.Error);
+            }
         }
 
     }

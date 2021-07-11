@@ -16,5 +16,7 @@ namespace SpotifyClient.Models.JSONModels
         public int TokenExpiery { get; set; }
         [JsonProperty("refresh_token")]
         public string RefreshToken { get; set; }
+        [JsonProperty("Error")]
+        public string Error { get; set; }
     }
 }
