@@ -8,7 +8,7 @@ namespace SpotifyClient.Models
 
         public string ClientSecret { get; }= "8b0843a3e91d4eacb090f3f131e2db02";
 
-        public string RedirectURI { get; }= "https://localhost:44387/App/authorise";
+        public string RedirectURI { get; }= "https://spotify.luke-else.com/App/authorise";
 
         //https://localhost:44387/App/authorise
         //https://spotify.luke-else.com/App/authorise
